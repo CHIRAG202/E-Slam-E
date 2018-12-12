@@ -1,0 +1,2966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>E-SLAM-E</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="angular.min.js"></script>
+   <script type="text/javascript" src="friend.js"></script>
+   
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+$(document).ready(function() {
+$(".btn-pref .btn").click(function () {
+    $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
+    // $(".tab").addClass("active"); // instead of this do the below 
+    $(this).removeClass("btn-default").addClass("btn-primary");   
+});
+});
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCLTrYwmQIa7BnUowxe03KpPTCgNsmkQoo",
+    authDomain: "testpro-04.firebaseapp.com",
+    databaseURL: "https://testpro-04.firebaseio.com",
+    projectId: "testpro-04",
+    storageBucket: "",
+    messagingSenderId: "18211408852"
+  };
+  firebase.initializeApp(config);
+    
+     var email = "";
+    
+  
+  function sendfriend(chara)
+  {
+          getfriends(chara,email);
+
+  };
+  function SignOut()
+  {
+    firebase.auth().signOut();
+    window.location.replace("https://e-slam-ee.herokuapp.com/templates/start.html");
+  };
+   
+   function initApp() {
+     // console.log("helllooo");
+
+   firebase.auth().onAuthStateChanged(function(user) {
+    email = user.email;
+    console.log(email);
+    getMail(email);
+     sendfriend('A');
+
+   });
+   //console.log(email);
+  
+ }
+   window.onload = function() {
+   // console.log("helllooo");
+      initApp();
+    };
+  </script>
+  
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <style type="text/css">
+   .card {
+    margin-top: 20px;
+    padding: 30px;
+    background-color: rgba(214, 224, 226, 0.2);
+    -webkit-border-top-left-radius:5px;
+    -moz-border-top-left-radius:5px;
+    border-top-left-radius:5px;
+    -webkit-border-top-right-radius:5px;
+    -moz-border-top-right-radius:5px;
+    border-top-right-radius:5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.card.hovercard {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 1);
+}
+.card.hovercard .card-background {
+    height: 130px;
+}
+.card-background img {
+    -webkit-filter: blur(25px);
+    -moz-filter: blur(25px);
+    -o-filter: blur(25px);
+    -ms-filter: blur(25px);
+    filter: blur(25px);
+    margin-left: -100px;
+    margin-top: -200px;
+    min-width: 130%;
+}
+.card.hovercard .useravatar {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+}
+.card.hovercard .useravatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.5);
+}
+.card.hovercard .card-info {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+}
+.card.hovercard .card-info .card-title {
+    padding:0 5px;
+    font-size: 20px;
+    line-height: 1;
+    color: #262626;
+    background-color: rgba(255, 255, 255, 0.1);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.card.hovercard .card-info {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 20px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+.card.hovercard .bottom {
+    padding: 0 20px;
+    margin-bottom: 17px;
+}
+.btn-pref .btn {
+    -webkit-border-radius:0 !important;
+}
+
+
+
+  #exTab1 .tab-content {
+  color : white;
+  background-color: #051421;
+  padding : 5px 15px;
+}
+
+/* remove border radius for the tab */
+
+#exTab1 .nav-pills > li > a {
+  border-radius: 0;
+}
+
+
+
+      body{
+
+ background-image: url("slamback.jpg");
+padding-top: 40px;
+  }
+  .item img {
+  width:100%
+}
+  </style>
+
+  <body data-spy="scroll" data-target="#my-navbar">
+<div ng-app ="friendApp" ng-controller="friendCtrl">
+<nav class="navbar navbar-inverse navbar-fixed-top" id="my-navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>                    
+      </button>
+      <a class="navbar-brand" href="#">E-SLAM-E</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li ><button class="btn btn-danger navbar-btn" onclick="SignOut();" id = "sinout">SignOut</button></li>
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container"><h1>  <font color="#FFC300" style="height:60px;font-size:100pt width:30px;"><b>Filter Your Friends!!</b></font></h1></div>
+<div id="exTab1" class="container"> 
+<ul  class="nav nav-pills">
+      <li class="active">
+        <a  href="#a" data-toggle="tab"  onclick="sendfriend('A');"><font color="#FFC300">A</font></a>
+      </li>
+      <li><a href="#b" data-toggle="tab" onclick="sendfriend('B');"><font color="#FFC300">B</font></a>
+      </li>
+      <li><a href="#c" data-toggle="tab" onclick="sendfriend('C');"><font color="#FFC300">C</font></a>
+      </li>
+      <li><a href="#d" data-toggle="tab" onclick="sendfriend('D');"><font color="#FFC300">D</font></a>
+      </li>
+      <li><a href="#e" data-toggle="tab" onclick="sendfriend('E');"><font color="#FFC300">E</font></a>
+      </li>
+      <li><a href="#f" data-toggle="tab" onclick="sendfriend('F');"><font color="#FFC300">F</font></a>
+      </li>
+      <li><a href="#g" data-toggle="tab" onclick="sendfriend('G');"><font color="#FFC300">G</font></a>
+      </li>
+      <li><a href="#h" data-toggle="tab" onclick="sendfriend('H');"><font color="#FFC300">H</font></a>
+      </li>
+      <li><a href="#i" data-toggle="tab" onclick="sendfriend('I');"><font color="#FFC300">I</font></a>
+      </li>
+      <li><a href="#j" data-toggle="tab" onclick="sendfriend('J');"><font color="#FFC300">J</font></a>
+      </li>
+      <li><a href="#k" data-toggle="tab" onclick="sendfriend('K');"><font color="#FFC300">K</font></a>
+      </li>
+      <li><a href="#l" data-toggle="tab" onclick="sendfriend('L');"><font color="#FFC300">L</font></a>
+      </li>
+      <li><a href="#m" data-toggle="tab" onclick="sendfriend('M');"><font color="#FFC300">M</font></a>
+      </li>
+      <li><a href="#n" data-toggle="tab" onclick="sendfriend('N');"><font color="#FFC300">N</font></a>
+      </li>
+      <li><a href="#o" data-toggle="tab" onclick="sendfriend('O');"><font color="#FFC300">O</font></a>
+      </li>
+      <li><a href="#p" data-toggle="tab" onclick="sendfriend('P');"><font color="#FFC300">P</font></a>
+      </li>
+      <li><a href="#q" data-toggle="tab" onclick="sendfriend('Q');"><font color="#FFC300">Q</font></a>
+      </li>
+      <li><a href="#r" data-toggle="tab" onclick="sendfriend('R');"><font color="#FFC300">R</font></a>
+      </li>
+      <li><a href="#s" data-toggle="tab" onclick="sendfriend('S');"><font color="#FFC300">S</font></a>
+      </li>
+      <li><a href="#t" data-toggle="tab" onclick="sendfriend('T');"><font color="#FFC300">T</font></a>
+      </li>
+      <li><a href="#u" data-toggle="tab" onclick="sendfriend('U');"><font color="#FFC300">U</font></a>
+      </li>
+      <li><a href="#v" data-toggle="tab" onclick="sendfriend('V');"><font color="#FFC300">V</font></a>
+      </li>
+      <li><a href="#w" data-toggle="tab" onclick="sendfriend('W');"><font color="#FFC300">W</font></a>
+      </li>
+      <li><a href="#x" data-toggle="tab" onclick="sendfriend('X');"><font color="#FFC300">X</font></a>
+      </li>
+      <li><a href="#y" data-toggle="tab" onclick="sendfriend('Y');"><font color="#FFC300">Y</font></a>
+      </li>
+      <li><a href="#z" data-toggle="tab" onclick="sendfriend('Z');"><font color="#FFC300">Z</font></a>
+      </li>
+    </ul>
+
+      <div class="tab-content clearfix">
+        <div class="tab-pane active" id="a">
+        <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;">
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModala" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModala" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsa" class="btn btn-primary" href="#tab1a" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesa" class="btn btn-default" href="#tab2a" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followinga" class="btn btn-default" href="#tab3a" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1a">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade" id="tab2a">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade" id="tab3a">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+   </div>
+       <div class="tab-pane" id="b">
+          <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalb" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalb" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsb" class="btn btn-primary" href="#tab1b" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesb" class="btn btn-default" href="#tab2b" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingb" class="btn btn-default" href="#tab3b" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1b">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2b">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3b">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="c">
+          <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalc" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalc" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsc" class="btn btn-primary" href="#tab1c" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesc" class="btn btn-default" href="#tab2c" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingc" class="btn btn-default" href="#tab3c" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1c">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2c">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3c">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+       
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+          <div class="tab-pane" id="d">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModald" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModald" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsd" class="btn btn-primary" href="#tab1d" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesd" class="btn btn-default" href="#tab2d" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingd" class="btn btn-default" href="#tab3d" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1d">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2d">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3d">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+       
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="e">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModale" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModale" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starse" class="btn btn-primary" href="#tab1e" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritese" class="btn btn-default" href="#tab2e" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followinge" class="btn btn-default" href="#tab3e" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1e">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2e">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3e">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="f">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+      <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalf" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalf" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsf" class="btn btn-primary" href="#tab1f" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesf" class="btn btn-default" href="#tab2f" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingf" class="btn btn-default" href="#tab3f" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1f">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2f">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3f">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+      
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="g">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+      <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalg" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalg" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsg" class="btn btn-primary" href="#tab1g" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesg" class="btn btn-default" href="#tab2g" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingg" class="btn btn-default" href="#tab3g" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1g">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2g">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3g">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+       
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+          <div class="tab-pane" id="h">
+          <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+       <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalh" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalh" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsh" class="btn btn-primary" href="#tab1h" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesh" class="btn btn-default" href="#tab2h" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingh" class="btn btn-default" href="#tab3h" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1h">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2h">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3h">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+     
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="i">
+          <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+      <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModali" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModali" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsi" class="btn btn-primary" href="#tab1i" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesi" class="btn btn-default" href="#tab2i" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingi" class="btn btn-default" href="#tab3i" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1i">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2i">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3i">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+       
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="j">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalj" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalj" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsj" class="btn btn-primary" href="#tab1j" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesj" class="btn btn-default" href="#tab2j" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingj" class="btn btn-default" href="#tab3j" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1j">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2j">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3j">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="k">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalk" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalk" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsk" class="btn btn-primary" href="#tab1k" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesk" class="btn btn-default" href="#tab2k" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingk" class="btn btn-default" href="#tab3k" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1k">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2k">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3k">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+       
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+          <div class="tab-pane" id="l">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModall" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModall" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsl" class="btn btn-primary" href="#tab1l" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesl" class="btn btn-default" href="#tab2l" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingl" class="btn btn-default" href="#tab3l" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1l">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2l">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3l">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+      
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="m">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalm" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalm" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsm" class="btn btn-primary" href="#tab1m" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesm" class="btn btn-default" href="#tab2m" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingm" class="btn btn-default" href="#tab3m" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1m">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2m">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3m">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+      
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="n">
+          <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModaln" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModaln" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsn" class="btn btn-primary" href="#tab1n" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesn" class="btn btn-default" href="#tab2n" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingn" class="btn btn-default" href="#tab3n" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1n">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2n">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3n">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+     
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+          <div class="tab-pane" id="o">
+          <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+       <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalo" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalo" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starso" class="btn btn-primary" href="#tab1o" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoriteso" class="btn btn-default" href="#tab2o" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingo" class="btn btn-default" href="#tab3o" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1o">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2o">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3o">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+     
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="p">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalp" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalp" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsp" class="btn btn-primary" href="#tab1p" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesp" class="btn btn-default" href="#tab2p" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingp" class="btn btn-default" href="#tab3p" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1p">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2p">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3p">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+     
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="q">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+       <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalq" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalq" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsq" class="btn btn-primary" href="#tab1q" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesq" class="btn btn-default" href="#tab2q" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingq" class="btn btn-default" href="#tab3q" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1q">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2q">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3q">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+       
+      </div> 
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="r">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalr" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalr" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsr" class="btn btn-primary" href="#tab1r" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesr" class="btn btn-default" href="#tab2r" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingr" class="btn btn-default" href="#tab3r" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1r">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2r">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3r">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+      
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+          <div class="tab-pane" id="s">
+          <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+       <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModals" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModals" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starss" class="btn btn-primary" href="#tab1s" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritess" class="btn btn-default" href="#tab2s" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followings" class="btn btn-default" href="#tab3s" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1s">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2s">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3s">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+     
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="t">
+          <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalt" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalt" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starst" class="btn btn-primary" href="#tab1t" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritest" class="btn btn-default" href="#tab2t" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingt" class="btn btn-default" href="#tab3t" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1t">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2t">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3t">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+       
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="u">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+       <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalu" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalu" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsu" class="btn btn-primary" href="#tab1u" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesu" class="btn btn-default" href="#tab2u" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingu" class="btn btn-default" href="#tab3u" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1u">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2u">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3u">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+  
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="v">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalv" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalv" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsv" class="btn btn-primary" href="#tab1v" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesv" class="btn btn-default" href="#tab2v" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingv" class="btn btn-default" href="#tab3v" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1v">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2v">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3v">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+       
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+          <div class="tab-pane" id="w">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalw" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalw" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsw" class="btn btn-primary" href="#tab1w" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesw" class="btn btn-default" href="#tab2w" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingw" class="btn btn-default" href="#tab3w" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1w">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2w">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3w">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+  
+      </div>
+    </div>
+  </div>
+  
+</div>
+          </div>
+          <div class="tab-pane" id="x">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalx" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalx" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsx" class="btn btn-primary" href="#tab1x" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesx" class="btn btn-default" href="#tab2x" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingx" class="btn btn-default" href="#tab3x" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1x">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2x">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3x">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+  
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+          <div class="tab-pane" id="y">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModaly" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModaly" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsy" class="btn btn-primary" href="#tab1y" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesy" class="btn btn-default" href="#tab2y" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingy" class="btn btn-default" href="#tab3y" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1y">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2y">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3y">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+        <div class="tab-pane" id="z">
+           <br>
+        <br>
+        <br>
+ <div class="row">
+  <div class="col-sm-6 col-md-4 " ng-repeat='friends in names'>
+    <div class="thumbnail" style="width: 242px;" >
+      <img ng-src= "{{friends.pic}}" style="width:242px;height:200px;">
+      <div class="caption">
+        <h3>{{friends.name}}</h3>
+        <p> <font color="#FFC300"> HOBBIES : </font> <br> <font color="#FF0000">{{friends.hobbies}}</font></p>
+        <p> <font color="#FFC300"> HAPPIEST MOMENT WITH ME :</font> <br> <font color="#FF0000">{{friends.happy_moment}}</font></p>
+        <div align="center"><p><button class="btn btn-primary" data-toggle="modal" data-target="#myModalz" ng-click="getfull(friends._id)">VIEW MORE</button> </p></div>
+<div class="modal fade" id="myModalz" role="dialog">
+    <div class="modal-dialog">
+    
+        <div class="modal-body">
+        <div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" ng-src="{{fullinfo.personal_info.pic}}">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" ng-src="{{fullinfo.personal_info.pic}}">
+        </div>
+        <div class="card-info"> <span class="card-title"><b>{{fullinfo.personal_info.name}}</b></span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="starsz" class="btn btn-primary" href="#tab1z" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Basic Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favoritesz" class="btn btn-default" href="#tab2z" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <div class="hidden-xs">Address Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="followingz" class="btn btn-default" href="#tab3z" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Fun Info</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1z">
+          <h5><font color="#FFC300"> Contact </font> : <font color="#FF0000"> {{fullinfo.personal_info.contact}} </font> </h5>
+          <h5><font color="#FFC300"> Aim in Life </font> : <font color="#FF0000">{{fullinfo.personal_info.aim_in_life}} </font> </h5>
+          <h5><font color="#FFC300"> Date of Birth </font> : <font color="#FF0000"> {{fullinfo.personal_info.dob}} </font> </h5>
+          <h5><font color="#FFC300"> Mail Id </font>  : <font color="#FF0000"> {{fullinfo.personal_info.mail_id}} </font> </h5>
+          <h5><font color="#FFC300"> Mother's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.mothers_name}}</font> </h5>
+          <h5><font color="#FFC300"> Father's Name </font> : <font color="#FF0000"> {{fullinfo.personal_info.fathers_name}} </font> </h5>
+          <h5><font color="#FFC300"> Motto </font> : <font color="#FF0000"> {{fullinfo.personal_info.motto}} </font> </h5>
+          <h5><font color="#FFC300"> Sunsign </font>  : <font color="#FF0000">{{fullinfo.personal_info.sun_sign}} </font> </h5>
+          <h5><font color="#FFC300"> Describe Yourself </font> : <font color="#FF0000"> {{fullinfo.personal_info.describe_urslf}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab2z">
+          <h5><font color="#FFC300"> Address </font>  : <font color="#FF0000"> {{fullinfo.address_info.address}} </font> </h5>
+          <h5><font color="#FFC300"> Landmark </font>  : <font color="#FF0000"> {{fullinfo.address_info.landmark}} </font> </h5>
+          <h5><font color="#FFC300"> PinCode </font>  : <font color="#FF0000"> {{fullinfo.address_info.pin_code}} </font> </h5>
+          <h5><font color="#FFC300"> City </font>  :  <font color="#FF0000"> {{fullinfo.address_info.city}} </font> </h5>
+          <h5><font color="#FFC300"> State </font>  : <font color="#FF0000"> {{fullinfo.address_info.state}} </font> </h5>
+          <h5><font color="#FFC300"> Country </font>  : <font color="#FF0000"> {{fullinfo.address_info.country}} </font> </h5>
+        </div>
+        <div class="tab-pane fade in" id="tab3z">
+          <h5><font color="#FFC300"> Favourite Food </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_food}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Movie </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_movie}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Quote </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_quote}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Song </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_song}} </font> </h5>
+          <h5><font color="#FFC300"> Favourite Sport </font>  : <font color="#FF0000"> {{fullinfo.fun_info.fav_sport}} </font> </h5>
+          <h5><font color="#FFC300"> First Love </font> : <font color="#FF0000"> {{fullinfo.fun_info.first_love}} </font> </h5>
+          <h5><font color="#FFC300"> 5 years from now, you'l be.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.fiv_now}} </font> </h5>
+          <h5><font color="#FFC300"> Hardwork or Luck for Success.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.hw_lck_reaz}} </font> </h5>
+          <h5><font color="#FFC300"> 3 places you'd like to visit.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.three_places}} </font> </h5>
+          <h5><font color="#FFC300"> Anyone,anything from past that changed you.. </font>  : <font color="#FF0000">{{fullinfo.fun_info.past_change}} </font> </h5>
+          <h5><font color="#FFC300"> Most Happiest Moment till now.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.happy_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Most Embarrassing moment till date.. </font> : <font color="#FF0000">{{fullinfo.fun_info.embarr_moment}} </font> </h5>
+          <h5><font color="#FFC300"> Do aliens Exists?? </font>  : <font color="#FF0000"> {{fullinfo.fun_info.alien_xist}} </font> </h5>
+          <h5><font color="#FFC300"> Opinions on Me.. </font>  : <font color="#FF0000"> {{fullinfo.fun_info.opinion_me}} </font> </h5>
+          <h5><font color="#FFC300"> Best Moment with Me.. </font> : <font color="#FF0000"> {{fullinfo.fun_info.best_mom_me}} </font> </h5>
+       
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        </div>
+
+    
+
+    </div>
+  </div>
+
+      </div>
+    </div>
+  </div>
+  
+</div>
+        </div>
+      </div>
+  </div>
+</div>
+</body>
+</html>

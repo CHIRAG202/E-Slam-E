@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>E-SLAM-E</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="angular.min.js"></script>
+   <script type="text/javascript" src="friend.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCLTrYwmQIa7BnUowxe03KpPTCgNsmkQoo",
+    authDomain: "testpro-04.firebaseapp.com",
+    databaseURL: "https://testpro-04.firebaseio.com",
+    projectId: "testpro-04",
+    storageBucket: "gs://testpro-04.appspot.com",
+    messagingSenderId: "18211408852"
+  };
+  firebase.initializeApp(config);
+ 
+
+  function SignOut()
+  {
+  if (firebase.auth().currentUser) {
+        // [START signout]
+        firebase.auth().signOut();
+         document.getElementById('sinout').disabled = true;
+        document.getElementById("try").innerHTML = "SignUp and LogIn";
+        document.getElementById('login-submit').disabled = false;
+                    document.getElementById('register-submit').disabled = false;
+
+
+        // [END signout]
+      } 
+    }
+      
+   function SignIn(){
+
+
+      
+        var email = document.getElementById('emaill').value;
+        var password = document.getElementById('passwordl').value;
+       
+   	    
+        if (email.length < 4) {
+          alert('Please enter an email address.');
+          return;
+        }
+        if (password.length < 4) {
+          alert('Please enter a password.');
+          return;
+        }
+        var flag=0;
+      
+        // Sign in with email and pass.
+        // [START authwithemail]
+         firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
+          // Handle Errors here.
+          console.log("login succes");
+        }, function(error){
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // [START_EXCLUDE]
+          if (errorCode === 'auth/wrong-password') {
+          	flag=1;
+            alert('Wrong password.');
+           console.log(flag + "now");
+          } else {
+          	flag=1;
+            alert(errorMessage);
+          }
+          console.log(error);
+          
+         
+          // [END_EXCLUDE]
+        });
+        /* if(!firebase.auth().currentUser.emailVerified)
+   	    {
+   	    	alert("First Verify Mail!!");
+   	    	flag=1;
+
+
+   	    	
+   	    }*/
+   	     
+       
+
+  
+    }
+
+
+function SwapDivsWithClick(div1,div2)
+{
+   d1 = document.getElementById(div1);
+   d2 = document.getElementById(div2);
+   if( d2.style.display == "none" )
+   {
+      d1.style.display = "none";
+      d2.style.display = "block";
+   }
+   else
+   {
+      d1.style.display = "block";
+      d2.style.display = "none";
+   }
+}
+
+
+
+ 
+      
+     
+   function handleSignUp(){
+  var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+  console.log("hello");
+  var promise =  firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
+
+        console.log("Register Sucess");
+        //firebase.auth().signOut();
+      }, function(error) {
+
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode == 'auth/weak-password') {
+          alert('The password is too weak.');
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+        // [END_EXCLUDE]
+      });
+
+    promise.then(function(user) {// You are forgetting this reference.
+     // user.sendEmailVerification();
+      // You can also call this.
+      firebase.auth().currentUser.sendEmailVerification();
+      alert('Email Verification Sent!');
+      
+
+
+
+      // Email sent.
+    }, function(error) {
+      // An error happened.
+    })
+  }
+  /*function getScope(ctrlName) {
+    var sel = 'div[ng-controller="' + ctrlName + '"]';
+    return angular.element(sel).scope();
+}
+ var $scope = getScope('friendCtrl');
+ console.log($scope);*/
+
+     function initApp() {
+      firebase.auth().onAuthStateChanged(function(user) {
+
+        if(user)
+        {
+           if(!firebase.auth().currentUser.emailVerified)
+        {
+          alert("First Verify Mail!!");
+          console.log("You are logged out");
+          document.getElementById('sinout').disabled = true;
+           document.getElementById("try").innerHTML = "SignUp and LogIn";
+           document.getElementById('login-submit').disabled = false;
+                    document.getElementById('register-submit').disabled = false;
+           firebase.auth().signOut();
+          
+        }
+
+        else {  console.log("You are logged in");
+          alert("You are logged in!!");
+          var email = user.email;
+          
+          document.getElementById("try").innerHTML = "Hello " + email ;
+                    document.getElementById('sinout').disabled = false;
+                    document.getElementById('login-submit').disabled = true;
+                    document.getElementById('register-submit').disabled = true;
+                    //var dec = checkmail(email);
+                    checkmail(email);
+                    //console.log(check);
+                   /* if($scope.check == 1)
+                    {
+                      console.log("Yooo");
+
+                        var schow  = posttoken();
+                        alert(schow);
+
+                    }*/
+
+                    SwapDivsWithClick('shownow','showlat');
+
+
+                  }
+
+
+        }
+        else {
+          console.log("You are logged out");
+          document.getElementById('sinout').disabled = true;
+           document.getElementById("try").innerHTML = "SignUp and LogIn";
+           document.getElementById('login-submit').disabled = false;
+                    document.getElementById('register-submit').disabled = false;
+
+
+        }
+      });
+    }
+    window.onload = function() {
+      console.log("Yooou")
+      initApp();
+    };
+
+</script> 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script  type="text/javascript" src="angular.min.js"></script>
+ 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<script type="text/javascript">
+	$(function() {
+
+    $('#login-form-link').click(function(e) {
+		$("#login-form").delay(100).fadeIn(100);
+ 		$("#register-form").fadeOut(100);
+		$('#register-form-link').removeClass('active');
+		$(this).addClass('active');
+		e.preventDefault();
+	});
+	$('#register-form-link').click(function(e) {
+		$("#register-form").delay(100).fadeIn(100);
+ 		$("#login-form").fadeOut(100);
+		$('#login-form-link').removeClass('active');
+		$(this).addClass('active');
+		e.preventDefault();
+	});
+
+});
+
+  $(function() {
+
+    $('#add-link').click(function(e) {
+    $("#add").delay(100).fadeIn(100);
+    $("#get").fadeOut(100);
+    $('#get-link').removeClass('active');
+    $(this).addClass('active');
+    e.preventDefault();
+  });
+  $('#get-link').click(function(e) {
+    $("#get").delay(100).fadeIn(100);
+    $("#add").fadeOut(100);
+    $('#add-link').removeClass('active');
+    $(this).addClass('active');
+    e.preventDefault();
+  });
+
+});
+
+</script>
+<style>
+	body{
+
+ background-image: url("slamback.jpg");
+padding-top: 40px;
+	}
+	.item img {
+  width:100%
+}
+.panel-login {
+	border-color: #ccc;
+	-webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
+}
+.panel-login>.panel-heading {
+	color: #00415d;
+	background-color: #fff;
+	border-color: #fff;
+	text-align:center;
+}
+.panel-login>.panel-heading a{
+	text-decoration: none;
+	color: #666;
+	font-weight: bold;
+	font-size: 15px;
+	-webkit-transition: all 0.1s linear;
+	-moz-transition: all 0.1s linear;
+	transition: all 0.1s linear;
+}
+.panel-login>.panel-heading a.active{
+	color: #029f5b;
+	font-size: 18px;
+}
+.panel-login>.panel-heading hr{
+	margin-top: 10px;
+	margin-bottom: 0px;
+	clear: both;
+	border: 0;
+	height: 1px;
+	background-image: -webkit-linear-gradient(left,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.15),rgba(0, 0, 0, 0));
+	background-image: -moz-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+	background-image: -ms-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+	background-image: -o-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+}
+.panel-login input[type="text"],.panel-login input[type="email"],.panel-login input[type="password"] {
+	height: 45px;
+	border: 1px solid #ddd;
+	font-size: 16px;
+	-webkit-transition: all 0.1s linear;
+	-moz-transition: all 0.1s linear;
+	transition: all 0.1s linear;
+}
+.panel-login input:hover,
+.panel-login input:focus {
+	outline:none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	border-color: #ccc;
+}
+.btn-login {
+	background-color: #59B2E0;
+	outline: none;
+	color: #fff;
+	font-size: 14px;
+	height: auto;
+	font-weight: normal;
+	padding: 14px 0;
+	text-transform: uppercase;
+	border-color: #59B2E6;
+}
+.btn-login:hover,
+.btn-login:focus {
+	color: #fff;
+	background-color: #53A3CD;
+	border-color: #53A3CD;
+}
+.forgot-password {
+	text-decoration: underline;
+	color: #888;
+}
+.forgot-password:hover,
+.forgot-password:focus {
+	text-decoration: underline;
+	color: #666;
+}
+
+.btn-register {
+	background-color: #1CB94E;
+	outline: none;
+	color: #fff;
+	font-size: 14px;
+	height: auto;
+	font-weight: normal;
+	padding: 14px 0;
+	text-transform: uppercase;
+	border-color: #1CB94A;
+}
+.btn-register:hover,
+.btn-register:focus {
+	color: #fff;
+	background-color: #1CA347;
+	border-color: #1CA347;
+}
+#logins {
+
+background-color: #1CA347;
+
+}
+footer {
+    background-color: rgba(44, 62, 80, 1.0);
+
+    width: 100%;
+    bottom: 0;
+    font-weight: lighter;
+    color: white;
+}
+.footerHeader{
+    width:100%;
+    padding:1em;
+    background-color:rgba(52, 73, 94,1.0);
+    text-align:center;
+    color:white;
+}
+footer h3{
+    font-weight:lighter;
+}
+footer ul{
+    padding-left:5px;
+    list-style:none;
+}
+footer p{
+    text-align : justify;
+    font-size : 12px;
+}
+footer iframe {
+    width:100%;
+    position:relative;
+    height:170px;
+}
+.sm{
+    list-style:none;
+    overflow:auto;
+}
+.sm li {
+    display: inline;
+    padding:5px;
+    float:left;
+} 
+.sm li a img {
+    width:32px;
+}
+
+	</style>
+
+<body data-spy="scroll" data-target="#my-navbar">
+<div ng-app ="friendApp" ng-controller="friendCtrl">
+<nav class="navbar navbar-inverse navbar-fixed-top" id="my-navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">E-SLAM-E</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li ><a href="#Home">Home</a></li>
+        
+        <li><a href="#ContactMe">ContactMe</a></li>
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li ><a href="#LogIn" id = "try">SignUp and LogIn</a></li>
+        <button class="btn btn-danger navbar-btn" onclick="SignOut();" id = "sinout">SignOut</button>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+		
+			<div  id="Home">
+  				<!--<h2>FriendShips..<small> Friends are families we choose..</small></h2>
+  			</div>-->
+              
+  			<div class="carousel slide" id="screenshot-carousel" data-ride="carousel">
+  				<ol class="carousel-indicators">
+  					<li data-target="#screenshot-carousel" data-slide-to="0" class="active"></li>
+  					<li data-target="#screenshot-carousel" data-slide-to="1"></li>
+  					<li data-target="#screenshot-carousel" data-slide-to="2"></li>
+  					<li data-target="#screenshot-carousel" data-slide-to="3"></li>
+  				</ol>
+  				<div class="carousel-inner">
+  					<div class="item active">
+  						<img src="frnd1.jpg" alt="Text of the image">
+  						<!--<div class="carousel-caption">
+  							<h3>Highway heading</h3>
+  							<p>This is the caption</p>
+  						</div>-->
+  					</div>
+  					<div class="item">
+  						<img src="frnd1.jpg" alt="Text of the image">
+  						<!--<div class="carousel-caption">
+  							<h3>River heading</h3>
+  							<p>This is the caption</p>
+  						</div>-->
+  					</div>
+  					<div class="item">
+  						<img src="frnd3.jpg" alt="Text of the image">
+  						<!--<div class="carousel-caption">
+  							<h3>Street heading</h3>
+  							<p>This is the caption</p>
+  						</div>-->
+  					</div>
+  					<div class="item">
+  						<img src="frnd4.jpg" alt="Text of the image">
+  						<!--<div class="carousel-caption">
+  							<h3>Painting heading</h3>
+  							<p>This is the caption</p>
+  						</div>-->
+  					</div>
+
+  				</div><!-- End Carousel inner -->
+  				<a href="#screenshot-carousel" class="left carousel-control" data-slide="prev">
+  					<span class="glyphicon glyphicon-chevron-left"></span>
+  				</a>
+  				<a href="#screenshot-carousel" class="right carousel-control" data-slide="next">
+  					<span class="glyphicon glyphicon-chevron-right"></span>
+  				</a>
+  			</div><!-- End Carousel -->
+
+	
+	</div>
+	<div class="container" style="display: block;" id = "shownow" >
+	
+			<div class="page-header" id="LogIn">
+    	<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<a href="#" class="active" id="login-form-link">Login</a>
+							</div>
+							<div class="col-xs-6">
+								<a href="#" id="register-form-link">Register</a>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<div id="login-form" style="display: block;">
+									<div class="form-group">
+										<input type="text" name="email" id="emaill" tabindex="1" class="form-control" placeholder="Email" value="">
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" id="passwordl" tabindex="2" class="form-control" placeholder="Password">
+									</div>
+									<!--<div class="form-group text-center">
+										<input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+										<label for="remember"> Remember Me</label>
+									</div>-->
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" onclick="SignIn();" value="Log In" >
+											</div>
+										</div>
+									</div>
+									<!--<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="text-center">
+													<a href="https://phpoll.com/recover" tabindex="5" class="forgot-password">Forgot Password?</a>
+												</div>
+											</div>
+										</div>
+									</div>-->
+								</div>
+								<div id="register-form"  style="display: none;">
+									<div class="form-group">
+										<input type="text" name="usernamer" id="usernamer" tabindex="1" class="form-control" placeholder="Username" value="">
+									</div>
+									<div class="form-group">
+										<input type="email" name="emailr" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+									</div>
+									<div class="form-group">
+										<input type="password" name="passwordr" id="password" tabindex="2" class="form-control" placeholder="Password">
+									</div>
+									<div class="form-group">
+										<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" onclick="handleSignUp();" value="Register Now">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+  <div class="container" style="display: none;" id = "showlat" >
+<div class="page-header" id="addIn">
+      <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-login">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-6">
+                <a href="#" class="active" id="add-link">FILL SLAMMY</a>
+              </div>
+              <div class="col-xs-6">
+                <a href="#" id="get-link">VIEW FRIENDS</a>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <div id="add" style="display: block;">
+                 <div style="background-image: url(addsback.jpg); width:100%; height:30%;">
+                 <br>
+                 <br>
+                 <p align = "center"><font color="#FFC300" style="height:60px;font-size:100pt width:30px;"> <b><h3>This section takes you to fill the slammy for the user.</h3></b> </font></p>
+                 <br>
+                 <br>
+                  <br> 
+                 <br>
+                 <br>
+                 <div align="center"><a href="https://e-slam-ee.herokuapp.com/templates/add.html"><img src="addfr.png" width="150" height="150"></a></div>
+                 <br>
+                  <br>
+                 <br>
+                 <br>
+                 <br>
+                 <br>
+                 </div>
+                </div>
+                <div id="get"  style="display: none;" >
+                <div style="background-image: url(findfriends.jpg); width:100%; height:30%;">
+                 <br>
+                 <br>  
+                  <p align="center"> <font color="#FFC300" style="height:60px;font-size:100pt width:30px;"><b><h3> Allows you to display the information of the slammy already filled by the user </h3></b></font></p>
+                 <br>
+                 <br>
+                  <br>
+                 <br>
+                 <br>
+                 <div align="center"><a href="https://e-slam-ee.herokuapp.com/templates/getinitial.html"><img src="searchf.png" width="150" height="150"></a></div>
+                 <br>
+                 <br>
+                  <br>
+                 <br>
+                 <br>
+                 <br>
+                 <br>
+                 </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+	<footer id = "ContactMe">
+    <div class="footerHeader" ></div>
+    <div class="container">
+		<div class="col-md-4" >
+		    <h3>About</h3>
+		    <p>
+		        The sole aim of this app is just to connect the friends that wanted to be together but couldn't due to constraints. The way to connect here is just through the memories made among each other. Let the world swirl with the act of friendship.
+		    </p>
+		</div>
+		
+		<div class="col-md-4">
+		    <h3>My Location </h3>
+		    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3508.7939615488854!2d77.09276771467472!3d28.425473282499972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d22071e9cc731%3A0x6b9596896e08b86e!2sMaitry+RBI+Apartments!5e0!3m2!1sen!2sin!4v1519915847118" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe> 
+		</div>
+		<div class="col-md-4" >
+		    <h3>Contact Me</h3>
+		    <ul>
+		        <li>Name : Manjeet Singh</li>
+		        <li>Phone : 9540886248</li>
+		        <li>E-mail : manjeet.04.singh@gmail.com</li>
+		       
+		    </ul>
+		    <!--<p>
+		        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+		    </p>-->
+		    <ul class="sm">
+		        <li><a href="https://www.facebook.com/manjeet.04.singh" ><img src="https://www.facebook.com/images/fb_icon_325x325.png" class="img-responsive"></a></li>
+		        <li><a href="https://www.linkedin.com/in/manjeet04/" ><img src="https://lh3.googleusercontent.com/00APBMVQh3yraN704gKCeM63KzeQ-zHUi5wK6E9TjRQ26McyqYBt-zy__4i8GXDAfeys=w300" class="img-responsive" ></a></li>
+		        <li><a href="https://github.com/Manjeet04" ><img src="https://image.flaticon.com/icons/svg/25/25231.svg" class="img-responsive"  ></a></li>
+		    </ul>
+		</div>
+    </div>
+</footer>
+</div>
+</body>
+</html>

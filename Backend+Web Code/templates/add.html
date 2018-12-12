@@ -1,0 +1,539 @@
+
+<html>
+
+<head>
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="friend.js"></script>
+    <script type="text/javascript" src="friend.js"></script>
+        <script type="text/javascript" >
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCLTrYwmQIa7BnUowxe03KpPTCgNsmkQoo",
+    authDomain: "testpro-04.firebaseapp.com",
+    databaseURL: "https://testpro-04.firebaseio.com",
+    projectId: "testpro-04",
+    storageBucket: "gs://testpro-04.appspot.com",
+    messagingSenderId: "18211408852"
+  };
+  firebase.initializeApp(config);
+  var storage = firebase.storage();
+  var storageRef = firebase.storage().ref();
+function upload(){
+               alert('success');
+               // File or Blob named mountains.jpg
+var file = document.getElementById("picu").files[0];
+//var file = "https://images.lifealth.com/uploads/2018/03/commitments-to-make-if-you-want-to-be-happy.jpg";
+console.log(file)
+//var blob = new Blob([file], { type: "image/jpeg" });
+
+// Create the file metadata
+var metadata = {
+  contentType: 'image/jpeg'
+};
+
+// Upload file and metadata to the object 'images/mountains.jpg'
+var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+  function(snapshot) {
+    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    console.log('Upload is ' + progress + '% done');
+    switch (snapshot.state) {
+      case firebase.storage.TaskState.PAUSED: // or 'paused'
+        console.log('Upload is paused');
+        break;
+      case firebase.storage.TaskState.RUNNING: // or 'running'
+        console.log('Upload is running');
+        break;
+    }
+  }, function(error) {
+
+  // A full list of error codes is available at
+  // https://firebase.google.com/docs/storage/web/handle-errors
+  switch (error.code) {
+    case 'storage/unauthorized':
+      // User doesn't have permission to access the object
+      break;
+
+    case 'storage/canceled':
+      // User canceled the upload
+      break;
+
+    case 'storage/unknown':
+      // Unknown error occurred, inspect error.serverResponse
+      break;
+  }
+}, function() {
+  // Upload completed successfully, now we can get the download URL
+  uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+    console.log('File available at', downloadURL);
+    getPic(downloadURL);
+  });
+});
+       }
+
+// Points to 'images'
+var imagesRef = storageRef.child('images');
+  $("input[name=file]").change(function () {
+    if (this.files && this.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var img = $('<img>').attr('src', e.target.result);
+            $('.upload-image-preview').html(img);
+        };
+
+        reader.readAsDataURL(this.files[0]);
+    }
+});
+  
+
+    	/*$('document').ready(function(){
+	$('input[type="text"], input[type="email"], textarea').focus(function(){
+		var background = $(this).attr('id');
+		$('#' + background + '-form').addClass('formgroup-active');
+		$('#' + background + '-form').removeClass('formgroup-error');
+	});
+	$('input[type="text"], input[type="email"], textarea').blur(function(){
+		var background = $(this).attr('id');
+		$('#' + background + '-form').removeClass('formgroup-active');
+	});
+
+function errorfield(field){
+	$(field).addClass('formgroup-error');
+	console.log(field);	
+}
+
+$("#waterform").submit(function() {
+/*	var stopsubmit = false;
+
+if($('#name').val() == "") {
+	errorfield('#name-form');
+	stopsubmit=true;
+}
+if($('#email').val() == "") {
+	errorfield('#email-form');
+	stopsubmit=true;
+}
+  if(stopsubmit) return false; 
+   $('input[type="submit"]').attr("disabled", true);
+        return true;
+});
+		
+	
+});*/
+</script>
+    	 
+    
+    <style type="text/css">
+    	@import url(https://fonts.googleapis.com/css?family=Sniglet|Raleway:900);
+
+
+body, html{
+	
+	padding: 0;
+	margin: 0;
+	font-family: 'Sniglet', cursive;
+}
+h1{
+	font-weight: normal;
+	font-size: 3em;
+	font-family: 'Raleway', sans-serif;
+	margin: 0 auto;
+	margin-top: 30px;
+	width: 550px;
+	color: #F90;
+	text-align: center;
+
+}
+
+.thnx{
+	font-weight: normal;
+	font-size: 3em;
+	font-family: 'Raleway', sans-serif;
+	margin: 0 auto;
+	margin-top: 30px;
+	width: 500px;
+	color: #F90;
+	text-align: center;
+
+}
+
+/* Animation webkit */
+@-webkit-keyframes myfirst
+{
+	0% {margin-left: -235px}
+	90% {margin-left: 100%;}
+	100% {margin-left: 100%;}
+}
+
+/* Animation */
+@keyframes myfirst
+{
+	0% {margin-left: -235px}
+	70% {margin-left: 100%;}
+	100% {margin-left: 100%;}
+}
+
+.fish{
+	/*background-image: url('http://www.geertjanhendriks.nl/codepen/form/fish.png');*/
+	width: 235px;
+	height: 104px;
+	margin-left: -235px;
+	position: absolute;	
+	animation: myfirst 24s;
+	-webkit-animation: myfirst 24s;
+	animation-iteration-count: infinite;
+	-webkit-animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	-webkit-animation-timing-function: linear;
+}
+
+#fish{
+	top: 120px;
+}
+
+#fish2{
+	top: 260px;
+	animation-delay: 12s;
+	-webkit-animation-delay: 12s;
+}
+
+
+header{
+	height: 160px;
+	/*background: url('http://www.geertjanhendriks.nl/codepen/form/golf.png') repeat-x bottom;*/
+}
+
+#form{
+	 	
+	background-color: #98d4f3;
+	
+	position: relative;
+	
+	
+}
+
+.upload-image {
+  display: table-cell;
+  border: 1px soid green;
+  width: 150px;
+  height: 150px;
+}
+
+.upload-image-preview img{
+    width: 100%;
+    height:  100%;
+}
+
+form{
+	margin: 0 auto;
+	width: 500px;
+	padding-top: 40px;
+	color: white;
+	position: relative;
+
+	
+	
+}
+label, input, textarea{
+	display: block;	
+}
+input, textarea{
+	width: 500px;	
+	border: none;
+	border-radius: 20px;
+	outline: none;
+	padding: 10px;
+	font-family: 'Sniglet', cursive;
+	font-size: 1em;
+	color: #676767;
+	transition: border 0.5s;
+	-webkit-transition: border 0.5s;
+	-moz-transition: border 0.5s;
+	-o-transition: border 0.5s;
+	border: solid 3px #98d4f3;	
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	
+}
+input:focus, textarea:focus{
+	border: solid 3px #77bde0;	
+}
+
+textarea{
+	height: 100px;	
+	resize: none; 
+	overflow: auto;
+}
+input[type="submit"]{
+	background-color: #F90;
+	color: white;
+	height: 50px;
+	cursor: pointer;
+	margin-top: 30px;
+	font-size: 1.29em;
+	font-family: 'Sniglet', cursive;
+	-webkit-transition: background-color 0.5s;
+	-moz-transition: background-color 0.5s;
+	-o-transition: background-color 0.5s;
+	transition: background-color 0.5s;
+}
+input[type="submit"]:hover{
+	background-color: #e58f0e;
+	
+}
+label{
+	font-size: 1.5em;
+	margin-top: 20px;
+	padding-left: 20px;
+}
+.formgroup, .formgroup-active, .formgroup-error{
+	background-repeat: no-repeat;
+	background-position: right bottom;
+	background-size: 10.5%;
+	transition: background-image 0.7s;
+	-webkit-transition: background-image 0.7s;
+	-moz-transition: background-image 0.7s;
+	-o-transition: background-image 0.7s;
+	width: 566px;
+	padding-top: 2px;
+}
+
+.formgroup{
+	/*background-image: url('http://www.geertjanhendriks.nl/codepen/form/pixel.gif');	*/
+}
+.formgroup-active{
+	/*background-image: url('http://www.geertjanhendriks.nl/codepen/form/octo.png');*/
+}
+.formgroup-error{
+	/*background-image: url('http://www.geertjanhendriks.nl/codepen/form/octo-error.png');*/
+	color: red;
+}
+    </style>
+<title>
+E-SLAM-E (Beta. v1)
+</title>
+
+
+</head>
+<script type="text/javascript"  src="friend.js">
+	window.onload = function() {
+      checktoken();
+    };
+</script>
+
+<body>
+<header>
+	<h1>Welcome to E-SLAM-E</h1>
+</header>
+
+
+<div id="form" ng-app ="friendApp" ng-controller="friendCtrl">
+
+<form id = "veri" method="post" ng-submit = "checktoken()" ng-show = "showveri">
+<div class="formgroup" id="name-form">
+    <label for="veri">Enter Secret Code :</label>
+    <input type="text" id="code" name="code" ng-model="veritoken" pattern="[0-9]{1,9}" required/>
+</div>
+<input type="submit" value="VerifY" ng-show = "showveri" />
+</form>
+<div class="fish" id="fish"></div>
+<div class="fish" id="fish2"></div>
+
+
+<form id="waterform" method="post" ng-submit="postdata()" ng-show = "showform" >
+
+<div class="formgroup" id="name-form">
+    <label for="name">Your name*</label>
+    <input type="text" id="name" name="name" ng-model="data.name" required/>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Your Zodiac</label>
+    <input type="text" id="name" name="sun_sign" ng-model="data.sun_sign"/>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Papa's Name</label>
+    <input type="text" id="name" name="fathers_name" ng-model="data.fathers_name"/>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Mum's Name</label>
+    <input type="text" id="name" name="mothers_name" ng-model="data.mothers_name"/>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Ur Birthdate?*</label>
+    <input type="date" id="name" name="dob" ng-model="data.dob" required/>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Hobbies?</label>
+    <textarea id="message" name="hobbies" ng-model="data.hobbies" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Aims in life</label>
+    <textarea id="message" name="aim_in_life" ng-model="data.aim_in_life" ></textarea>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Life MOTTO</label>
+    <input type="text" id="name" name="motto" ng-model="data.motto"/>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Describe Yourself</label>
+    <textarea id="message" name="message" ng-model="data.describe_urslf" ></textarea>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Ur Mobile Number?</label>
+    <input type="text" id="name" name="contact" ng-model="data.contact" pattern="[789][0-9]{9}"/>
+</div>
+
+<div class="formgroup" id="email-form">
+    <label for="email">Your e-mail*</label>
+    <input id="email" name="email" ng-model="data.mail_id" type="text"
+    pattern="[a-zA-Z0-9!#$%&amp;'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*"
+    required />
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Where can I find you? (Address)</label>
+    <textarea id="message" name="address" ng-model="data.address.address" ></textarea>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">House Landmark</label>
+    <input type="text" id="name" name="landmark" ng-model="data.address.landmark"/>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">City</label>
+    <input type="text" id="city" name="city" ng-model="data.address.city"/>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">State</label>
+    <input type="text" id="state" name="state" ng-model="data.address.state"/>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Country</label>
+    <input type="text" id="name" name="country" ng-model="data.address.country"/>
+</div>
+
+
+<div class="formgroup" id="name-form">
+    <label for="name">Pin Code</label>
+    <input type="text" id="name" name="pin" ng-model="data.address.pin_code" pattern="[0-9]{6}"/>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Your Favourite Food.. (you love to indulge in.)?*</label>
+    <input type="text" id="name" name="fav_food" ng-model="data.fun_info.fav_food" required />
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Your Favourite Song?*</label>
+    <input type="text" id="name" name="fav_song" ng-model="data.fun_info.fav_song" required />
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Your all time watch movie?*</label>
+    <input type="text" id="name" name="fav_movie" ng-model="data.fun_info.fav_movie" required />
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Quote that came.. and became your fav. one.</label>
+    <textarea id="message" name="message" ng-model="data.fun_info.fav_quote" ></textarea>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">Best Sport*</label>
+    <input type="text" id="name" name="fav_sport" ng-model="data.fun_info.fav_sport" required />
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Most Embarrassing Moment of your life?</label>
+    <textarea id="message" name="embar" ng-model="data.fun_info.embarr_moment" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Happiest Moment of your life? (Making you smile :) )*</label>
+    <textarea id="message" name="hpy" ng-model="data.fun_info.happy_moment" required ></textarea>
+</div>
+
+<div class="formgroup" id="name-form">
+    <label for="name">1st Love <3 ? </label>
+    <input type="text" id="name" name="lv" ng-model="data.fun_info.first_love" />
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Ur opinion on.. What effects results..Hardwork or Luck ?</label>
+    <textarea id="message" name="hw" ng-model="data.fun_info.hw_lck_reaz" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">3 places you'd like to visit..( I'l accompany anyways :P )</label>
+    <textarea id="message" name="accompany" ng-model="data.fun_info.three_places" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Do Aliens exists????</label>
+    <textarea id="message" name="Aliens" ng-model="data.fun_info.alien_xist" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">How do see yourself.. as a person.. 5 years from now.</label>
+    <textarea id="message" name="fyears" ng-model="data.fun_info.fiv_now" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Anything/Moment/Person in past.. that changed you drastically.. as a person.</label>
+    <textarea id="message" name="past" ng-model="data.fun_info.past_change" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Your opinions on me :P .</label>
+    <textarea id="message" name="opi" ng-model="data.fun_info.opinion_me" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">Your Best moment with me.</label>
+    <textarea id="message" name="mom" ng-model="data.fun_info.best_mom_me" ></textarea>
+</div>
+
+<div class="formgroup" id="message-form">
+    <label for="message">An Image of U.. For me <3</label>
+</div>
+<div class="upload-image">
+    <div class="upload-image-preview"></div>
+    <input type="file" name="file" id = "picu" value="Upload Image" ng-model="data.pic" onchange="upload()" />
+</div>
+
+
+	<input type="submit" value="I've Filled Ur SlammY" ng-hide = "hint" />
+	
+</form>
+<div class="thnx" id="thnx" ng-show = "hint">{{msg}}</div>
+</div>
+<!---<div ng-app ="friendApp" ng-controller="friendCtrl">
+
+Name : <input ng-model="data.name" /><br/><br/>
+Describe Yourself : <input ng-model="data.describe_urslf" /><br/><br/>
+Address : <input ng-model="data.address" /><br/><br/>
+Hobbies : <input ng-model="data.hobbies" /><br/><br/>
+<input type="button" value="Send" ng-click="postdata()" /> <br/><br/>
+{{msg}}
+</div> -->
+</body>
+</html>
